@@ -1,5 +1,7 @@
 package com.api.parkingcontrol.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.api.parkingcontrol.models.ResidentsModel;
@@ -19,5 +21,8 @@ public class ResidentsService {
     public ResidentsModel save(ResidentsModel residentsModel) {
         return residentsRepository.save(residentsModel);
     }
-
+    
+    public List<ResidentsModel> findAll() {
+        return residentsRepository.findAll();
+    }
 }
