@@ -1,6 +1,7 @@
 package com.api.parkingcontrol.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,9 @@ public class ResidentsService {
     
     public List<ResidentsModel> findAll() {
         return residentsRepository.findAll();
+    }
+
+    public Optional<ResidentsModel> findById(int id) {
+        return residentsRepository.getResidentById(id);
     }
 }

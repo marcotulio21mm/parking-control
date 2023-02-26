@@ -32,11 +32,11 @@ public class ResidentsModel implements Serializable {
     @Column(nullable = false)
     private LocalDateTime insertDateResident;
 
-    public long getIdResindent() {
+    public int getIdResindent() {
         return idResident;
     }
 
-    public void setIdResindet(int idResident) {
+    public void setIdResident(int idResident) {
         this.idResident = idResident;
     }
 
