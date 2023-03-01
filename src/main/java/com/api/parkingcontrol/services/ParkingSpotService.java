@@ -49,7 +49,7 @@ public class ParkingSpotService {
         parkingSpotRepository.delete(parkingSpotModel);
     }
 
-    public Optional<ParkingSpotModel>getByApartment(String apartment){
+    public List<ParkingSpotModel>getByApartment(String apartment){
         return parkingSpotRepository.getAllByApartment(apartment);
     }
 }

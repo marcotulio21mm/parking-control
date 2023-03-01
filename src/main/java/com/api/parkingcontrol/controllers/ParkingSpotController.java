@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
-import com.api.parkingcontrol.exceptions.ApartmentOrBlockAlreadyInUseException;
 import com.api.parkingcontrol.exceptions.EmptyParkingSpotsException;
 import com.api.parkingcontrol.exceptions.ParkingSpotAlreadyInUseException;
 import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundException;
@@ -56,9 +55,6 @@ public class ParkingSpotController {
         }
         if (parkingSpotService.existsByParkingSpotNumber(parkingSpotDto.getParkingSpotNumber())) {
             ParkingSpotAlreadyInUseException.throwException();
-        }
-        if (parkingSpotService.existsByApartmentAndBlock(parkingSpotDto.getApartment(), parkingSpotDto.getBlock())) {
-            ApartmentOrBlockAlreadyInUseException.throwException();
         }
     }
 
@@ -108,11 +104,14 @@ public class ParkingSpotController {
     }
 
     @GetMapping("/apartment/{apartment}")
-    public ResponseEntity<Object> getParkingSpotsByApartment(@PathVariable(value = "apartment") String apartment) {
-        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.getByApartment(apartment);
-        if (!parkingSpotModelOptional.isPresent()) {
-            ParkingSpotNotFoundException.throwException();
+    public ResponseEntity<List<ParkingSpotModel>> getParkingSpotsByApartment(@PathVariable(value = "apartment") String apartment) {
+        ResponseEntity<List<ParkingSpotModel>> all = ResponseEntity.status(HttpStatus.OK)
+                .body(parkingSpotService.getByApartment(apartment));
+
+        List<ParkingSpotModel> response = all.getBody();
+        if (response.isEmpty()) {
+            EmptyParkingSpotsException.throwException();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
+        return all;
     }
 }

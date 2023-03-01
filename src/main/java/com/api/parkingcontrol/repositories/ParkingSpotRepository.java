@@ -1,6 +1,6 @@
 package com.api.parkingcontrol.repositories;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +18,5 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpotModel, U
     boolean existsByApartmentAndBlock(String apartment, String block);
 
     @Query(value = "SELECT * FROM tb_parking_spot WHERE apartment = ?1", nativeQuery = true)
-    Optional<ParkingSpotModel> getAllByApartment(String apartment);
+    List<ParkingSpotModel> getAllByApartment(String apartment);
 }
