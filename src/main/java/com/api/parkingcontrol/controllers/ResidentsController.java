@@ -56,6 +56,15 @@ public class ResidentsController {
         return all;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getOneResident(@PathVariable(value = "id") int id) {
+        Optional<ResidentsModel> residentsModelOptional = residentsService.findById(id);
+        if (!residentsModelOptional.isPresent()) {
+            ResidentNotFoundException.throwException();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(residentsModelOptional.get());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateResident(@PathVariable(value = "id") int id,
             @RequestBody @Valid ResidentDto parkingSpotDto) {
