@@ -30,4 +30,9 @@ public class ResidentsService {
     public Optional<ResidentsModel> findById(int id) {
         return residentsRepository.getResidentById(id);
     }
+
+    @Transactional
+    public void delete(ResidentsModel residentsModel) {
+        residentsRepository.delete(residentsModel);
+    }
 }
