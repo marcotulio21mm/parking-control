@@ -48,4 +48,8 @@ public class ParkingSpotService {
     public void delete(ParkingSpotModel parkingSpotModel) {
         parkingSpotRepository.delete(parkingSpotModel);
     }
+
+    public Optional<ParkingSpotModel>getByApartment(String apartment){
+        return parkingSpotRepository.getAllByApartment(apartment);
+    }
 }

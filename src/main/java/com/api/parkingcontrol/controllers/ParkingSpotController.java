@@ -106,4 +106,13 @@ public class ParkingSpotController {
         parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.save(parkingSpotModel));
     }
+
+    @GetMapping("/apartment/{apartment}")
+    public ResponseEntity<Object> getParkingSpotsByApartment(@PathVariable(value = "apartment") String apartment) {
+        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.getByApartment(apartment);
+        if (!parkingSpotModelOptional.isPresent()) {
+            ParkingSpotNotFoundException.throwException();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
+    }
 }
