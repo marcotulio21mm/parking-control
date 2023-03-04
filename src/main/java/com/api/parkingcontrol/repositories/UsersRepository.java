@@ -14,6 +14,6 @@ import com.api.parkingcontrol.models.UsersModel;
 public interface UsersRepository extends JpaRepository<UsersModel, ID> {
     
     @Query
-    (value = "SELECT * FROM users WHERE id_user = ?1", nativeQuery = true)
+    (value = "SELECT * FROM users WHERE id = ?1", nativeQuery = true)
     Optional<UsersModel> getUserById(int idUser);
 }

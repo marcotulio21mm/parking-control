@@ -46,7 +46,7 @@ public class ResidentsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResidentsModel>> getAllParkingSpots() {
+    public ResponseEntity<List<ResidentsModel>> getAllResidents() {
         ResponseEntity<List<ResidentsModel>> all = ResponseEntity.status(HttpStatus.OK)
                 .body(residentsService.findAll());
 
@@ -68,13 +68,13 @@ public class ResidentsController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateResident(@PathVariable(value = "id") int id,
-            @RequestBody @Valid ResidentDto parkingSpotDto) {
+            @RequestBody @Valid ResidentDto residentDto) {
         Optional<ResidentsModel> residentsModelOptional = residentsService.findById(id);
         if (!residentsModelOptional.isPresent()) {
             ResidentNotFoundException.throwException();
         }
         var residentsModel = new ResidentsModel();
-        BeanUtils.copyProperties(parkingSpotDto, residentsModel);
+        BeanUtils.copyProperties(residentDto, residentsModel);
         residentsModel.setIdResident(residentsModelOptional.get().getIdResindent());
         residentsModel.setInsertDateResident(residentsModelOptional.get().getInsertDateResident());
         return ResponseEntity.status(HttpStatus.OK).body(residentsService.save(residentsModel));
