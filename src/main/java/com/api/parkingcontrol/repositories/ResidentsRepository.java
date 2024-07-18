@@ -11,8 +11,6 @@ import com.api.parkingcontrol.models.ResidentsModel;
 
 @Repository
 public interface ResidentsRepository extends JpaRepository<ResidentsModel, ID> {
-    // boolean existsByLicensePlateCar(String licensePlateCar);
-
     @Query(value = "SELECT * FROM residents WHERE id_resident = ?1", nativeQuery = true)
     Optional<ResidentsModel> getResidentById(int idResident);
 }

@@ -42,20 +42,7 @@ public class ParkingSpotController {
 
     @PostMapping
     public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-        var parkingSpotModel = new ParkingSpotModel();
-        this.validateExists(parkingSpotDto);
-        BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-        parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
-        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
-    }
-
-    private void validateExists(ParkingSpotDto parkingSpotDto) {
-        if (parkingSpotService.existsByLicensePlateCar(parkingSpotDto.getLicensePlateCar())) {
-            PlateAlreadyInUseException.throwException();
-        }
-        if (parkingSpotService.existsByParkingSpotNumber(parkingSpotDto.getParkingSpotNumber())) {
-            ParkingSpotAlreadyInUseException.throwException();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotDto));
     }
 
     @GetMapping
@@ -92,19 +79,12 @@ public class ParkingSpotController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
             @RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
-        if (!parkingSpotModelOptional.isPresent()) {
-            ParkingSpotNotFoundException.throwException();
-        }
-        var parkingSpotModel = new ParkingSpotModel();
-        BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-        parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
-        parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.save(parkingSpotModel));
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.updateParkingSpot(id, parkingSpotDto));
     }
 
     @GetMapping("/apartment/{apartment}")
-    public ResponseEntity<List<ParkingSpotModel>> getParkingSpotsByApartment(@PathVariable(value = "apartment") String apartment) {
+    public ResponseEntity<List<ParkingSpotModel>> getParkingSpotsByApartment(
+            @PathVariable(value = "apartment") String apartment) {
         ResponseEntity<List<ParkingSpotModel>> all = ResponseEntity.status(HttpStatus.OK)
                 .body(parkingSpotService.getByApartment(apartment));
 
