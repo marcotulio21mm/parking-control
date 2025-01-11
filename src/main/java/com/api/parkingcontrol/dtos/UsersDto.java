@@ -1,47 +1,22 @@
 package com.api.parkingcontrol.dtos;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class UsersDto {
-    @NotBlank
+    @NotBlank(message = "nome não deve estar em branco")
     private String name;
-    @NotBlank
+    @Email(message = "insira um email válido")
+    @NotBlank(message = "email não deve estar em branco")
     private String email;
-    @NotBlank
+    @NotBlank(message = "senha não deve estar em branco")
     private String password;
     @NotBlank
     private String insertDateUser;
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getInsertDateUser() {
-        return this.insertDateUser;
-    }
-
-    public void setInsertDateUser(String insertDateUser) {
-        this.insertDateUser = insertDateUser;
-    }
-
 }
