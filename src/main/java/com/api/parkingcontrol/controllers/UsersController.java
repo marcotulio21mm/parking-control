@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.api.parkingcontrol.exceptions.exceptiontypes.NotFoundException;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.api.parkingcontrol.dtos.UsersDto;
@@ -19,7 +21,7 @@ import jakarta.validation.Valid;
 @CrossOrigin
 @RequestMapping("/users")
 @AllArgsConstructor
-
+@Validated
 public class UsersController {
 
     private UsersService usersService;
@@ -35,7 +37,9 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public UsersModel getOneResident(@PathVariable(value = "id") int id) {
+    public UsersModel getOneResident(@PathVariable(value = "id" )
+        @NotNull(message = "Informe um id válido")
+        int id) {
         try {
             return usersService.findById(id);
         } catch (NoSuchElementException e) {

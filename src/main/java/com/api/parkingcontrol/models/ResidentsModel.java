@@ -1,5 +1,6 @@
 package com.api.parkingcontrol.models;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -9,11 +10,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "RESIDENTS")
-
+@Getter
+@Setter
 public class ResidentsModel implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -31,60 +36,4 @@ public class ResidentsModel implements Serializable {
     private String isActiveResident;
     @Column(nullable = false)
     private LocalDateTime insertDateResident;
-
-    public int getIdResindent() {
-        return idResident;
-    }
-
-    public void setIdResident(int idResident) {
-        this.idResident = idResident;
-    }
-
-    public String getNameResident() {
-        return nameResident;
-    }
-
-    public void setNameResident(String nameResident) {
-        this.nameResident = nameResident;
-    }
-
-    public String getDocumentResident() {
-        return documentResident;
-    }
-
-    public void setDocumentResident(String documentResident) {
-        this.documentResident = documentResident;
-    }
-
-    public String getApartmentResident() {
-        return this.apartmentResident;
-    }
-
-    public void setApartmentResident(String apartmentResident) {
-        this.apartmentResident = apartmentResident;
-    }
-
-    public String getBlockResident() {
-        return this.blockResident;
-    }
-
-    public void setBlockResident(String blockResident) {
-        this.blockResident = blockResident;
-    }
-
-    public String getIsActiveResident() {
-        return this.isActiveResident;
-    }
-
-    public void setIsActiveResident(String isActiveResident) {
-        this.isActiveResident = isActiveResident;
-    }
-
-    public LocalDateTime getInsertDateResident() {
-        return this.insertDateResident;
-    }
-
-    public void setInsertDateResident(LocalDateTime insertDateResident) {
-        this.insertDateResident = insertDateResident;
-    }
 }

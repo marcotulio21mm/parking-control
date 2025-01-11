@@ -1,12 +1,7 @@
 package com.api.parkingcontrol.controllers;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.parkingcontrol.dtos.ResidentDto;
-import com.api.parkingcontrol.exceptions.EmptyResidentsException;
-import com.api.parkingcontrol.exceptions.ResidentNotFoundException;
 import com.api.parkingcontrol.models.ResidentsModel;
 import com.api.parkingcontrol.services.ResidentsService;
 
@@ -38,55 +31,29 @@ public class ResidentsController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveResident(@RequestBody @Valid ResidentDto residentDto) {
-        var residentsModel = new ResidentsModel();
-        BeanUtils.copyProperties(residentDto, residentsModel);
-        residentsModel.setInsertDateResident(LocalDateTime.now(ZoneId.of("UTC")));
-        return ResponseEntity.status(HttpStatus.CREATED).body(residentsService.save(residentsModel));
+    public ResidentsModel saveResident(@RequestBody @Valid ResidentDto residentDto) {
+        return residentsService.save(residentDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<ResidentsModel>> getAllResidents() {
-        ResponseEntity<List<ResidentsModel>> all = ResponseEntity.status(HttpStatus.OK)
-                .body(residentsService.findAll());
-
-        List<ResidentsModel> response = all.getBody();
-        if (response.isEmpty()) {
-            EmptyResidentsException.throwException();
-        }
-        return all;
+    public List<ResidentsModel> getAllResidents() {
+        return residentsService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneResident(@PathVariable(value = "id") int id) {
-        Optional<ResidentsModel> residentsModelOptional = residentsService.findById(id);
-        if (!residentsModelOptional.isPresent()) {
-            ResidentNotFoundException.throwException();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(residentsModelOptional.get());
+    public ResidentsModel getOneResident(@PathVariable(value = "id") int id) {
+        return residentsService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateResident(@PathVariable(value = "id") int id,
+    public ResidentsModel updateResident(@PathVariable(value = "id") int id,
             @RequestBody @Valid ResidentDto residentDto) {
-        Optional<ResidentsModel> residentsModelOptional = residentsService.findById(id);
-        if (!residentsModelOptional.isPresent()) {
-            ResidentNotFoundException.throwException();
-        }
-        var residentsModel = new ResidentsModel();
-        BeanUtils.copyProperties(residentDto, residentsModel);
-        residentsModel.setIdResident(residentsModelOptional.get().getIdResindent());
-        residentsModel.setInsertDateResident(residentsModelOptional.get().getInsertDateResident());
-        return ResponseEntity.status(HttpStatus.OK).body(residentsService.save(residentsModel));
+        return residentsService.update(residentDto, id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteResident(@PathVariable(value = "id") int id) {
-        Optional<ResidentsModel> residentsModelOptional = residentsService.findById(id);
-        if (!residentsModelOptional.isPresent()) {
-            ResidentNotFoundException.throwException();
-        }
-        residentsService.delete(residentsModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Morador deletado com sucesso.");
+       residentsService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
