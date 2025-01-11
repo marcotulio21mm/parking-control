@@ -43,7 +43,7 @@ public class ResidentsService {
         return residentsRepository.findAll();
     }
 
-    public ResidentsModel findById(int id) {
+public ResidentsModel findById(int id) {
         var resident = residentsRepository.findById(id);
         if(resident.isPresent()) {
             return resident.get();
